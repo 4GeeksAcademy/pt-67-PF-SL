@@ -28,7 +28,6 @@ class Helmets(enum.Enum):
     bluegrass = "Bluegrass"
     custom = "Custom"
 
-
 db = SQLAlchemy()
 
 class User(db.Model):
