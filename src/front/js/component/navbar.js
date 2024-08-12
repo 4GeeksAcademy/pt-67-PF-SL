@@ -1,8 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import beBananaLogo from "/workspaces/pt-67-PF-SL/src/front/img/BeBanana.png";
 
 export const Navbar = () => {
+	const navigate = useNavigate()
+	const location = useLocation()
 
 	const handleLogout = () => {
         localStorage.removeItem('token');
@@ -20,7 +22,9 @@ export const Navbar = () => {
 						<button className="btn btn-secondary">Photos uploaded</button>
 					</Link>
 				</div>
-				<button className="btn btn-warning btn-lg" onClick={handleLogout}>Logout</button>
+				{location.pathname !== "/login" && (
+					<button className="btn btn-warning btn-lg" onClick={handleLogout}>Logout</button>
+				)}
 			</div>
 		</nav>
 	);
