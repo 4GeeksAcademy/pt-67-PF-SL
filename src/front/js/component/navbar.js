@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import beBananaLogo from "../img/BeBanana.png";
+import beBananaLogo from "/workspaces/pt-67-PF-SL/src/front/img/BeBanana.png";
 
 export const Navbar = () => {
 
