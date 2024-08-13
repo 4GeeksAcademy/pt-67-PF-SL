@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			users: [],
 			message: null,
 			demo: [
 				{
@@ -15,11 +16,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			]
 		},
+
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+			login: async(email, password) => {
+                try {
+                    let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4.github.dev/api/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "email": email,
+                            "password": password
+                        })
+
+                    })
+
+                    const data = await response.json()
+                    localStorage.setItem("token", data.access_token);
+                    return true
+
+                }   catch (error) {
+                    return false 
+                }
+        },
 
 			getMessage: async () => {
 				try{
