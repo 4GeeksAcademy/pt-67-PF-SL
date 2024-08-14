@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			loggin: async(email, password) => {
                 try {
-                    let response = await fetch("https://fictional-pancake-976q5g6769jp37p.github.dev/api/loggin", {
+                    let response = await fetch(process.env.BACKEND_URL + "/api/loggin", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
