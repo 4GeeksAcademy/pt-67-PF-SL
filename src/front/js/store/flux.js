@@ -42,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
 		register: async(email, password, username, name, firstname, role) => {
 			try {
-				let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4-3001.app.github.dev/api/register", {
+				let response = await fetch(process.env.BACKEND_URL + "/api/register", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
