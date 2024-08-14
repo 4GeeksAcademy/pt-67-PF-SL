@@ -41,8 +41,8 @@ const login = () => {
                 </div>
                 <button type="submit">login</button>
                 <Link to="/register">
-				    <span className="register-button btn btn-primary btn-lg" href="#" role="button">
-					    Register
+				    <span className="register-button btn btn-lg" href="#" role="button">
+					    Register here if you are not a Banananer yet
 				    </span>
 			    </Link>
             </form>

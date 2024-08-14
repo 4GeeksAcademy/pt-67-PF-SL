@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			login: async(email, password) => {
                 try {
-                    let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4.github.dev/api/login", {
+                    let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4-3001.app.github.dev/api/login", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -42,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
 		register: async(email, password, username, name, firstname, role) => {
 			try {
-				let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4.github.dev/api/register", {
+				let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4-3001.app.github.dev/api/register", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
@@ -55,7 +55,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"firstname": firstname,
 						"role": role
 					})
-
 				})
 
 				const data = await response.json()
