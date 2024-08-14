@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			login: async(email, password) => {
                 try {
-                    let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4-3001.app.github.dev/api/login", {
+                    let response = await fetch(process.env.BACKEND_URL + "/api/loggin", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
