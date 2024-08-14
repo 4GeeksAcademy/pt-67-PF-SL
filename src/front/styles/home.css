@@ -59,9 +59,88 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.login-container span {
+    width: 100%;
+    padding: 10px;
+    background-color: #1313137f;
+    color: #fafaf9;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.login-container span:hover {
+    background-color: rgb(248, 245, 33);
 }
 
 .login-container button:hover {
+    background-color: rgb(248, 245, 33);
+}
+
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    top: 50px;
+}
+
+.register-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+}
+
+.register-container label {
+    color: #fafaf9;
+    width: 100%;
+    text-align: center;
+    background-color: #1313137f;
+    font-size: 2rem; 
+    margin-bottom: 10px;
+}
+
+.register-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(248, 245, 33);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.register-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(248, 245, 33);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.register-container input:focus {
+    animation: inputFocus 0.5s ease-in-out forwards;
+}
+
+.register-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1313137f;
+    color: #fafaf9;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.register-container button:hover {
     background-color: rgb(248, 245, 33);
 }
 

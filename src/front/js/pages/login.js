@@ -40,8 +40,8 @@ const login = () => {
                     />
                 </div>
                 <button type="submit">login</button>
-                <Link to="/">
-				    <span className="btn btn-primary btn-lg" href="#" role="button">
+                <Link to="/register">
+				    <span className="register-button btn btn-primary btn-lg" href="#" role="button">
 					    Register
 				    </span>
 			    </Link>

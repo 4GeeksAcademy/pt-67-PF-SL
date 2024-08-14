@@ -40,6 +40,32 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return false 
                 }
         },
+		register: async(email, password, username, name, firstname, role) => {
+			try {
+				let response = await fetch("https://crispy-space-couscous-g4x5rvx4x7j6fjj4.github.dev/api/register", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						"email": email,
+						"password": password,
+						"username": username,
+						"name": name,
+						"firstname": firstname,
+						"role": role
+					})
+
+				})
+
+				const data = await response.json()
+				localStorage.setItem("token", data.access_token);
+				return true
+
+			}   catch (error) {
+				return false 
+			}
+		},
 
 			getMessage: async () => {
 				try{
