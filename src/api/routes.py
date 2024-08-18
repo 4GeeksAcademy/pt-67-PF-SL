@@ -76,7 +76,7 @@ def login():
     password = request.json.get('password', None)
     users_query = User.query.filter_by(email=email).first()
     if not users_query:
-        return jsonify({"msg": "Doesn't exist"}), 402
+        return jsonify({"msg": "The username doesn't exist"}), 402
     if password != users_query.password:
         return jsonify({"msg": "Bad username or password"}), 401
     print(users_query.role.value)
