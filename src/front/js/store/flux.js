@@ -14,13 +14,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			token:"",
 		},
 
 		actions: {
 			login: async(email, password) => {
+				const store = getStore()
                 try {
-                    let response = await fetch(process.env.BACKEND_URL + "/api/loggin", {
+                    let response = await fetch(process.env.BACKEND_URL + "api/login", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -34,6 +36,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                     const data = await response.json()
                     localStorage.setItem("token", data.access_token);
+					setStore({token: data.access_token})
+
                     return true
 
                 }   catch (error) {
@@ -42,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
 		register: async(email, password, username, name, firstname, role) => {
 			try {
-				let response = await fetch(process.env.BACKEND_URL + "/api/register", {
+				let response = await fetch(process.env.BACKEND_URL + "api/register", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
@@ -69,7 +73,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const resp = await fetch(process.env.BACKEND_URL + "api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves

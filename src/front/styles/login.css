@@ -1,0 +1,80 @@
+body { 
+    background-image: url('/workspaces/pt-67-PF-SL/src/front/img/HollybikeSonia.PNG');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: aliceblue;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+}
+
+.login-container label {
+    font-family:   Verdana;
+    color: #fafaf9;
+    width: 100%;
+    text-align: center;
+    background-color: #1313137f;
+    font-size: 2rem; 
+    margin-bottom: 10px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(248, 245, 33);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.login-container input:focus {
+    animation: inputFocus 0.5s ease-in-out forwards;
+}
+
+.login-container button {
+    font-family:   Verdana;
+    width: 100%;
+    padding: 10px;
+    background-color: #1313137f;
+    color: #fafaf9;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.login-container span {
+    font-family:Franklin Gothic Medium;
+    text-align: center;
+    text-shadow: 1px 1px 2px black;
+    width: 100%;
+    padding: 10px;
+    color: #fafaf9;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.login-container span:hover {
+    color: rgb(248, 245, 33);
+}
+
+.login-container button:hover {
+    background-color: rgb(248, 245, 33);
+}

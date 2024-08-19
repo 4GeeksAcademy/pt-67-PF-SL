@@ -5,6 +5,7 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+
 body { 
     background-image: url('/workspaces/pt-67-PF-SL/src/front/img/HollybikeSonia.PNG');
     background-size: cover;
@@ -13,196 +14,50 @@ body {
     background-color: aliceblue;
 }
 
-.navbar-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-family:Franklin Gothic Medium;
-    text-shadow: 1px 1px 2px black;
-    width: 100%;
-    padding: 10px;
-    color: #fafaf9;
-}
-.navbar-container-side{
-    display: flex;
-    flex-direction: row;
-    align-items: end;
-    padding: 10px;
-}
-.navbar-link{
-    margin-right: 1em;
-}
-.navbar-boton{
+footer {
     background-color: rgb(248, 245, 33);
-}
-
-.login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.login-container form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-}
-
-.login-container label {
-    font-family:   Verdana;
-    color: #fafaf9;
-    width: 100%;
     text-align: center;
-    background-color: #1313137f;
-    font-size: 2rem; 
-    margin-bottom: 10px;
-}
-
-.login-container input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid rgb(248, 245, 33);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.login-container input:focus {
-    animation: inputFocus 0.5s ease-in-out forwards;
-}
-
-.login-container button {
-    font-family:   Verdana;
-    width: 100%;
-    padding: 10px;
-    background-color: #1313137f;
-    color: #fafaf9;
-    font-size: 1.7rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.login-container span {
     font-family:Franklin Gothic Medium;
-    text-align: center;
-    text-shadow: 1px 1px 2px black;
-    width: 100%;
-    padding: 10px;
-    color: #fafaf9;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-bottom: 20px;
 }
 
-.login-container span:hover {
-    color: rgb(248, 245, 33);
+.landing-logo{
+    width: 100px;
 }
 
-.login-container button:hover {
-    background-color: rgb(248, 245, 33);
-}
-
-.register-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    top: 50px;
-}
-
-.register-container form {
-    display: flex;
-    flex-direction: column;
-    justify-items: start;
-    width: 600px;
-}
-
-.tag-container {
-    display: flex;
-    flex-direction: row;
-    ;
-}
-
-.register-container label {
-    font-family:   Verdana;
-    font-weight: 200;
-    color: #fafaf9;
-    width: 200%;
-    text-align: start;
-    align-items: first baseline;
-    /*background-color: #1313137f;*/
-    font-size: 2rem; 
-    margin-bottom: 10px;
-}
-
-.register-container input {
-    width: 200%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid rgb(248, 245, 33);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.register-container select {
-    width: 200%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid rgb(248, 245, 33);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.register-container input:focus {
-    animation: inputFocus 0.5s ease-in-out forwards;
-}
-
-.register-container button {
-    font-family:   Verdana;
-    width: 100%;
-    padding: 10px;
-    background-color: #1313137f;
-    color: #fafaf9;
-    font-size: 1.7rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.register-container button:hover {
-    background-color: rgb(248, 245, 33);
-}
-
-.register-container span {
+.landing-container{
     text-shadow: 1px 1px 2px black;
     font-family:Franklin Gothic Medium;
     color: #fafaf9;
     font-size: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    height: max-content;
 }
 
-.register-container span:hover {
-    color: rgb(248, 245, 33);
-}
-
-
-
-@keyframes inputFocus {
-    0% {
-        box-shadow: 0 0 0 0 rgba(255, 238, 0, 0.7);
-    }
-    100% {
-        box-shadow: 0 0 10px 5px rgba(255, 238, 0, 0.7);
-    }
-}
-
-footer {
-    background-color: rgb(248, 245, 33);
+.landing-contianer-left {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: bottom;
+    align-items: center;
     text-align: center;
+    justify-content: right;
+    
+}
+
+.landing-logo{
+    display: flex;
+    flex-direction: row;
+}
+.landing-banana{
+    height: 80px;
+}
+.landing-contianer-right{
+    image-orientation:from-image ;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: bottom;
 }

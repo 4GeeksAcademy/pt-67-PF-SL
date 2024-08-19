@@ -79,7 +79,7 @@ def login():
         return jsonify({"msg": "The username doesn't exist"}), 402
     if password != users_query.password:
         return jsonify({"msg": "Bad username or password"}), 401
-    print(users_query.role.value)
+ 
 
     additional_claims = {
         "user_id" : users_query.id,
