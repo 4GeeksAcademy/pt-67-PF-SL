@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
-import { Link } from 'react-router-dom';
 import "../../styles/register.css";
 
 const register = () => {
@@ -19,7 +18,7 @@ const register = () => {
         const registered = await actions.register(email, password, username, name, firstname, role)
 
         if (registered){
-            navigate("/");
+            navigate("/demo");
         }
     }
 

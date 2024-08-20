@@ -6,12 +6,9 @@
     on that page only (the ones not reused in other pages).
 */
 
-body { 
-    background-image: url('/workspaces/pt-67-PF-SL/src/front/img/HollybikeSonia.PNG');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: aliceblue;
+body {
+    margin:0px
+
 }
 
 footer {
@@ -25,6 +22,13 @@ footer {
 }
 
 .landing-container{
+    background-image: url('/workspaces/pt-67-PF-SL/src/front/img/Landing.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: aliceblue;
+    width:100vw;
+    height: 100vh;
     text-shadow: 1px 1px 2px black;
     font-family:Franklin Gothic Medium;
     color: #fafaf9;

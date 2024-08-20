@@ -7,14 +7,19 @@ import { Context } from "../store/appContext";
 export const Navbar = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
+	const {store, action} = useContext(Context)
+		const token = store.token
 
 	const handleLogout = () => {
-		const {store, action} = useContext(Context)
-		const token = store.token
+
 		console.log(token)
         localStorage.removeItem('token');
-        navigate('/login');
+        navigate('/');
     };
+
+	const handleLogin = async (e) => {
+            navigate("/login");
+    }
 
 	return (
 		<nav className="navbar p-3 m-3" style={{ backgroundColor: 'rgba(46, 39, 1, 0.8)' }}>
@@ -31,9 +36,11 @@ export const Navbar = () => {
 							<button className="btn btn-secondary">Demo</button>
 						</Link>
 					</div>
-					{(location.pathname !== "/login" && location.pathname !== "/register") && (
-						<button className="navbar-boton btn btn-lg" onClick={handleLogout}>Logout</button>
+					{(location.pathname !== "/login" && location.pathname !== "/register") && (token ? 
+						<button className="navbar-boton btn btn-lg" onClick={handleLogout}>Logout</button> : 
+						<button className="navbar-boton" onClick={handleLogin}>Login</button>
 					)}
+					
 				</div>
 			</div>
 		</nav>

@@ -1,12 +1,11 @@
-body { 
-    background-image: url('/workspaces/pt-67-PF-SL/src/front/img/Rider.PNG');
+
+
+.register-container {
+    background-image: url('/workspaces/pt-67-PF-SL/src/front/img/Photographer.JPG');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-color: aliceblue;
-}
-
-.register-container {
     display: flex;
     flex-direction: column;
     align-items: center;

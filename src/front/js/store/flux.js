@@ -38,7 +38,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     localStorage.setItem("token", data.access_token);
 					setStore({token: data.access_token})
 
-                    return true
+                    return data
 
                 }   catch (error) {
                     return false 

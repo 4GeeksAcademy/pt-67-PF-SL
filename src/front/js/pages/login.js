@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
-import { Link } from 'react-router-dom';
 import "/workspaces/pt-67-PF-SL/src/front/styles/login.css";
 
 const login = () => {
@@ -12,10 +11,11 @@ const login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        await actions.login(email, password)
-            navigate("/");
+        const user = await actions.login(email, password)
+            console.log(user)
+            navigate(user.role === 'Rider' ? '/rider' : '/photographer');
     }
-
+    /* if user role photographer demo if role rider navigate demo*/
     return (
         <div className="login-container">
             <form onSubmit={handleLogin}>

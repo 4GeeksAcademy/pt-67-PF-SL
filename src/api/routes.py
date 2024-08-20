@@ -87,7 +87,7 @@ def login():
         "role" : users_query.role.value
     }
     access_token = create_access_token(identity=users_query.id, additional_claims=additional_claims)
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token, role=users_query.role.value), 200
 
 @api.route('/register', methods=['POST'])
 def register():
