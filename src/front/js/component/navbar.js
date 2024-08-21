@@ -23,13 +23,13 @@ export const Navbar = () => {
 	return (
 		<nav className="navbar p-3 m-3" style={{ backgroundColor: 'rgba(46, 39, 1, 0.8)' }}>
 			<div className="navbar-container">
-				<div className="navbar-container-side">
+				<div className="navbar-container-left">
 					<Link to="/">
 						<img src={beBananaLogo} alt="Be Banana Logo" style={{ height: "75px" }} className="navbar-logo mb-0 h1" />
 					</Link>
-					<h2 className="be-banana">BeBanana</h2>
+					<h1 className="be-banana">BEBANANA</h1>
 				</div>
-				<div className="navbar-container-side">
+				<div className="navbar-container-right">
 					<div className="navbar-link ml-auto">
 						<Link to="/demo">
 							<button className="btn btn-secondary">Demo</button>
