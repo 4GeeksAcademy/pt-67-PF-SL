@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
-import "/workspaces/pt-67-PF-SL/src/front/styles/photographer.css";
+import "../../styles/photographer.css";
 
 export const Photographer = () => {
 	const { store, actions } = useContext(Context);

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
-import "/workspaces/pt-67-PF-SL/src/front/styles/rider.css";
+import "../../styles/rider.css";
 
 export const Rider = () => {
 	const { store, actions } = useContext(Context);
