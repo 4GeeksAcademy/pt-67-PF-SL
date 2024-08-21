@@ -8,7 +8,14 @@
     padding: 10px;
     color: #fafaf9;
 }
-.navbar-container-side{
+.navbar-container-left{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    padding: 10px;
+}
+.navbar-container-right{
     display: flex;
     flex-direction: row;
     align-items: end;
