@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import beBananaLogo from "/workspaces/pt-67-PF-SL/src/front/img/BeBanana.png";
 import "../../styles/home.css";
 
 export const Home = () => {
@@ -11,7 +10,7 @@ export const Home = () => {
 			<div className="landing-contianer-left text-center mt-5">
 				<div className="landing-logo">
 					<p>
-						<img className="landing-banana" src={beBananaLogo} />
+						<img className="landing-banana" src={"https://res.cloudinary.com/dflvexboa/image/upload/v1724271495/ajvismnteuh2wjl7ub9c.png"} />
 					</p>
 					<h1>BeBanana</h1>
 				</div>
