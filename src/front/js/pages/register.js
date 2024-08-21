@@ -30,7 +30,7 @@ const register = () => {
                     <select id="role" type="role" value={role} onChange={(e) => setRole(e.target.value)}>
                         <option value="">--Wich Banananer will you be?--</option>
                         <option value="rider">Rider</option>
-                        <option value="photografer">Photografer</option>
+                        <option value="photographer">Photographer</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>

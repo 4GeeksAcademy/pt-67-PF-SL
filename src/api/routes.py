@@ -92,7 +92,7 @@ def login():
 @api.route('/register', methods=['POST'])
 def register():
     request_body = request.get_json()
-
+    print("hola")
     if User.query.filter_by(email=request_body["email"]).first():
         return jsonify({"msg": "Email already exists"}), 409
    

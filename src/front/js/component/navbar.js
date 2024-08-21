@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import beBananaLogo from "/workspaces/pt-67-PF-SL/src/front/img/BeBanana.png";
 import "../../styles/navbar.css";
@@ -7,13 +7,12 @@ import { Context } from "../store/appContext";
 export const Navbar = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
-	const {store, action} = useContext(Context)
-		const token = store.token
+	const {store, actions} = useContext(Context)
+
+	useEffect(()=>{console.log(store.token)}, [])
 
 	const handleLogout = () => {
-
-		console.log(token)
-        localStorage.removeItem('token');
+		actions.logout()
         navigate('/');
     };
 
@@ -36,7 +35,7 @@ export const Navbar = () => {
 							<button className="btn btn-secondary">Demo</button>
 						</Link>
 					</div>
-					{(location.pathname !== "/login" && location.pathname !== "/register") && (token ? 
+					{(location.pathname !== "/login" && location.pathname !== "/register") && (store.token ? 
 						<button className="navbar-boton btn btn-lg" onClick={handleLogout}>Logout</button> : 
 						<button className="navbar-boton" onClick={handleLogin}>Login</button>
 					)}

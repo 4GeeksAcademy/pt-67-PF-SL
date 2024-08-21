@@ -44,6 +44,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return false 
                 }
         },
+		logout: () => {
+			localStorage.removeItem('token');
+			setStore({token: ""})
+		},
+
 		register: async(email, password, username, name, firstname, role) => {
 			try {
 				let response = await fetch(process.env.BACKEND_URL + "api/register", {
@@ -63,7 +68,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				const data = await response.json()
 				localStorage.setItem("token", data.access_token);
-				return true
+				return data
 
 			}   catch (error) {
 				return false 
