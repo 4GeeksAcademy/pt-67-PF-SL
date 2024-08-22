@@ -30,7 +30,7 @@
     border-radius: 10px;
     cursor: pointer;
 }
-.navbar-boton{
+.navbar-button{
     background-color: rgb(248, 245, 33);
     font-family:Franklin Gothic Medium;
     width: 100%;
@@ -43,8 +43,8 @@
     margin-right: 1em;
 }
 
-.navbar-boton button:hover {
-    background-color: rgb(248, 245, 33);
+.navbar-button button:hover {
+    background-color: rgb(248, 108, 33);
 }
 
 .be-banana {

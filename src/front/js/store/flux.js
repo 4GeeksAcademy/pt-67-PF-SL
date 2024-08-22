@@ -3,6 +3,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			users: [],
 			message: null,
+			token:"",
+			registerInputLength: 1,
+			photo: [],
 			demo: [
 				{
 					title: "FIRST",
@@ -15,7 +18,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			token:"",
 		},
 
 		actions: {
@@ -31,7 +33,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                             "email": email,
                             "password": password
                         })
-
                     })
 
                     const data = await response.json()
@@ -43,37 +44,65 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }   catch (error) {
                     return false 
                 }
-        },
-		logout: () => {
-			localStorage.removeItem('token');
-			setStore({token: ""})
-		},
+			},
+			logout: () => {
+				localStorage.removeItem('token');
+				setStore({token: ""})
+			},
 
-		register: async(email, password, username, name, firstname, role) => {
-			try {
-				let response = await fetch(process.env.BACKEND_URL + "api/register", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						"email": email,
-						"password": password,
-						"username": username,
-						"name": name,
-						"firstname": firstname,
-						"role": role
+			register: async(email, password, username, name, firstname, role) => {
+				try {
+					let response = await fetch(process.env.BACKEND_URL + "api/register", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"email": email,
+							"password": password,
+							"username": username,
+							"name": name,
+							"firstname": firstname,
+							"role": role
+						})
 					})
-				})
 
-				const data = await response.json()
-				localStorage.setItem("token", data.access_token);
-				return data
+					const data = await response.json()
+					localStorage.setItem("token", data.access_token);
+					setStore({token: data.access_token})
 
-			}   catch (error) {
-				return false 
-			}
-		},
+					return data
+
+				}   catch (error) {
+					return false 
+				}
+			},
+			uploadPhoto: async(Url_Image, bicycle, helmet, price, user_id) => {
+				try {
+					let response = await fetch(process.env.BACKEND_URL + "api/photos", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"Url_Image": Url_Image,
+							"bicycle": bicycle,
+							"helmet": helmet,
+							"price": price,
+							"user_id": user_id, /*Aqui tengo que ver como coger el user id del que esta ya logueado */
+						})
+					})
+
+					const data = await response.json()
+					localStorage.setItem("photo", data.photo);
+					setStore({photo: data.photo})
+
+					return data
+
+				}   catch (error) {
+					return false 
+				}
+			},
 
 			getMessage: async () => {
 				try{

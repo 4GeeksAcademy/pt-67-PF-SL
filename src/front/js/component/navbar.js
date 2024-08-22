@@ -35,8 +35,8 @@ export const Navbar = () => {
 						</Link>
 					</div>
 					{(location.pathname !== "/login" && location.pathname !== "/register") && (store.token ? 
-						<button className="navbar-boton btn btn-lg" onClick={handleLogout}>Logout</button> : 
-						<button className="navbar-boton" onClick={handleLogin}>Login</button>
+						<button className="navbar-button btn btn-lg" onClick={handleLogout}>LOGOUT</button> : 
+						<button className="navbar-button" onClick={handleLogin}>LOGIN</button>
 					)}
 					
 				</div>

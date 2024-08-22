@@ -4,7 +4,7 @@ import { Context } from '../store/appContext';
 import "../../styles/register.css";
 
 const register = () => {
-    const {actions} = useContext(Context)
+    const {actions, store} = useContext(Context)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username,setUsername] = useState('');
@@ -13,19 +13,22 @@ const register = () => {
     const [role,setRole] = useState('');
     const navigate = useNavigate();
 
+    const registerInputLength = store.registerInputLength
+
     const handleRegister = async (e) => {
         e.preventDefault()
         const registered = await actions.register(email, password, username, name, firstname, role)
 
         if (registered){
-            navigate("/demo");
+            navigate(registered.role === 'Rider' ? '/rider' : '/photographer');
+            console.log("register", registered)
         }
     }
 
     return (
         <div className="register-container">
             <form onSubmit={handleRegister}>
-            <div className='tag-container'>
+                <div className='tag-container'>
                     <label htmlFor="role">BeBananaRole:</label>
                     <select id="role" type="role" value={role} onChange={(e) => setRole(e.target.value)}>
                         <option value="">--Wich Banananer will you be?--</option>
@@ -39,6 +42,7 @@ const register = () => {
                     <input
                         type="username"
                         id="username"
+                        minLength={registerInputLength}
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
@@ -46,7 +50,7 @@ const register = () => {
                 <div className='tag-container'>
                     <label htmlFor="email">Email:</label>
                     <input
-                        type="text"
+                        type="email"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -57,6 +61,7 @@ const register = () => {
                     <input
                         type="password"
                         id="password"
+                        minLength={registerInputLength}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

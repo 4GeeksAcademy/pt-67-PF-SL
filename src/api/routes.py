@@ -92,7 +92,6 @@ def login():
 @api.route('/register', methods=['POST'])
 def register():
     request_body = request.get_json()
-    print("hola")
     if User.query.filter_by(email=request_body["email"]).first():
         return jsonify({"msg": "Email already exists"}), 409
    
@@ -112,7 +111,7 @@ def register():
     }
 
     access_token = create_access_token(identity=request_body["email"], additional_claims=additional_claims)
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token, role=user.role.value), 200
 
 @api.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
@@ -175,7 +174,7 @@ def get_photo(photo_id):
         "data": photo_info
     }
 
-    return jsonify(response_body), 200
+    return jsonify(response_body, photo_info), 200
 
 @api.route('/photos/<int:photo_id>', methods=['DELETE'])
 @jwt_required()
