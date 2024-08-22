@@ -18,7 +18,7 @@ class PaymentMethods(enum.Enum):
 
 class Bikes(enum.Enum):
     santa_Cruz = "Santa Cruz"
-    orbea = "Orbea"
+    kona = "Kona"
     canyon = "Canyon"
     custom = "Custom"
 
