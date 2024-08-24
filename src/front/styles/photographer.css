@@ -11,3 +11,87 @@
     align-items: center;
     justify-content: center;
 }
+
+.photographer-container form {
+    /*background-color: #1313137f;*/
+    display: flex;
+    flex-direction: column;
+    justify-items: start;
+    width: 80vw;
+}
+
+.photographer-container label {
+    font-family:Franklin Gothic Medium;
+    text-shadow: 1px 1px 2px black;
+    font-weight: 200;
+    color: #fafaf9;
+    width: 200%;
+    text-align: start;
+    align-items: first baseline;
+    font-size: 2rem; 
+    margin-bottom: 10px;
+}
+
+.photographer-container select {
+    width: 200%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 2px solid rgb(248, 245, 33);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.price {
+    width: 200%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(248, 245, 33);
+    transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.file_select{
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #1313137f;
+}
+
+.loading{
+    font-family:   Franklin Gothic Medium; 
+    text-shadow: 1px 1px 2px black;
+    font-weight: 200;
+    color: #fafaf9;
+}
+
+.photographer-container button {
+    font-family:   Franklin Gothic Medium;
+    width: 100%;
+    padding: 10px;
+    background-color: #1313137f;
+    color: #fafaf9;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.photographer-container input:focus {
+    animation: inputFocus 0.5s ease-in-out forwards;
+}
+
+.photographer-container button:hover {
+    background-color: rgb(248, 245, 33);
+    color:black
+}
+
+@keyframes inputFocus {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 238, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 10px 5px rgba(255, 238, 0, 0.7);
+    }
+}

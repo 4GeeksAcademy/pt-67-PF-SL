@@ -1,3 +1,5 @@
+import { image } from "@cloudinary/url-gen/qualifiers/source";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -6,6 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			token:"",
 			registerInputLength: 1,
 			photo: [],
+			url: [],
 			demo: [
 				{
 					title: "FIRST",
@@ -77,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false 
 				}
 			},
-			uploadPhoto: async(Url_Image, bicycle, helmet, price, user_id) => {
+			uploadPhoto: async(url, bicycle, helmet, price, user_id) => {
 				try {
 					let response = await fetch(process.env.BACKEND_URL + "api/photos", {
 						method: "POST",
@@ -85,11 +88,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						},
 						body: JSON.stringify({
-							"Url_Image": Url_Image,
+							"url": url,
 							"bicycle": bicycle,
 							"helmet": helmet,
 							"price": price,
-							"user_id": user_id, /*Aqui tengo que ver como coger el user id del que esta ya logueado */
+							/* "user_id": user_id, Aqui tengo que ver como coger el user id del que esta ya logueado */
 						})
 					})
 
@@ -103,7 +106,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false 
 				}
 			},
-
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
