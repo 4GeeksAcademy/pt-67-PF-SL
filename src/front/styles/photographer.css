@@ -65,6 +65,11 @@
     color: #fafaf9;
 }
 
+.photographer-image{
+    max-height: 300px;
+    max-width: 300px;
+}
+
 .photographer-container button {
     font-family:   Franklin Gothic Medium;
     width: 100%;

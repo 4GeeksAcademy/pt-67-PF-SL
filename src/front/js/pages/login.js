@@ -11,9 +11,13 @@ const login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        const user = await actions.login(email, password)
-            console.log(user)
-            navigate(user.role === 'Rider' ? '/rider' : '/photographer');
+        const logged = await actions.login(email, password)
+
+
+            if (logged){
+                navigate(logged.role === 'Rider' ? '/rider' : '/photographer');
+                console.log("logged", logged)
+            }
     }
     /* if user role photographer demo if role rider navigate demo*/
     return (

@@ -2,12 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Photo, Order, OrderItems
+from api.models import db, User, Photo, Order, OrderItems, Helmets, Bikes
 from api.utils import generate_sitemap, APIException
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from flask_cors import CORS
 from azure.cognitiveservices.vision.customvision.prediction import CustomVisionPredictionClient
 from msrest.authentication import ApiKeyCredentials
+from flask_bcrypt import generate_password_hash, check_password_hash
+
 import os 
 
 api = Blueprint('api', __name__)
@@ -17,7 +19,7 @@ CORS(api)
 
 ENDPOINT = os.getenv("AZURE_ENDPOINT", "https://westeurope.api.cognitive.microsoft.com/")
 project_id = os.getenv("AZURE_PROJECT_ID", "4a0d1a7e-a87e-43e2-838c-3eec869f5aeb")
-prediction_key = os.getenv("AZURE_PREDICTION_KEY", "225ae10ed4e14b4ea2a4e56ac1a9474f")
+prediction_key = os.getenv("AZURE_PREDICTION_KEY", "60094dce53474cc681efc9b474460632")
 publish_iteration_name = os.getenv("AZURE_ITERATION_NAME", "Iteration4")
 prediction_credentials = ApiKeyCredentials(in_headers={"Prediction-key": prediction_key})
 predictor = CustomVisionPredictionClient(ENDPOINT, prediction_credentials)
@@ -56,6 +58,33 @@ def get_users():
         return jsonify({"msg": "Not users yet"}), 404
     return jsonify(response_body), 200
 
+# Para usuario loggeado
+@api.route('/userinfo', methods=['GET'])
+@jwt_required()
+def userinfo():
+    try:
+        current_user = get_jwt_identity()
+        # Buscar al usuario en la base de datos por su ID
+        user = User.query.filter(User.email == current_user).first()
+        print(user)
+        if user:
+            # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
+            response_body = user.serialize()
+            # Puedes sacar esto con serialize ej: <p>{user.description}</p>
+            # "user_name": self.user_name,
+            # "email": self.email,
+            # "description": self.description,
+            # "admin": self.admin
+            # Devolver el mensaje de saludo como JSON con un código de estado 200 (OK)
+            return jsonify(response_body), 200
+        else:
+            # Manejar el caso en el que el usuario no existe
+            print("error else")
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        # Manejar cualquier otro error que pueda ocurrir
+        return jsonify({"error": str(e)}), 500
+
 @api.route('/users/<int:user_id>', methods = ['GET'])
 def get_user(user_id): 
     user = User.query.get(user_id)
@@ -75,35 +104,42 @@ def login():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     users_query = User.query.filter_by(email=email).first()
+    is_valid = check_password_hash(users_query.password, password) 
+    print(email, password, is_valid)
     if not users_query:
         return jsonify({"msg": "The username doesn't exist"}), 402
-    if password != users_query.password:
+    if is_valid == False:
         return jsonify({"msg": "Bad username or password"}), 401
+    # if email != users_query.email or not is_valid:
+    #     return jsonify({"msg": "Bad username or password"}), 401
  
-
     additional_claims = {
         "user_id" : users_query.id,
         "user_username" : users_query.username,
         "role" : users_query.role.value
     }
-    access_token = create_access_token(identity=users_query.id, additional_claims=additional_claims)
-    return jsonify(access_token=access_token, role=users_query.role.value), 200
+    access_token = create_access_token(identity=users_query.id)
+    return jsonify(access_token=access_token, additional_claims=additional_claims), 200
 
 @api.route('/register', methods=['POST'])
 def register():
     request_body = request.get_json()
+    hashed_password = generate_password_hash(request_body["password"]).decode('utf-8')
     if User.query.filter_by(email=request_body["email"]).first():
         return jsonify({"msg": "Email already exists"}), 409
-   
+    
     user = User()
     user.new_user(
         email=request_body["email"],    
-        password=request_body["password"],
+        password=hashed_password,
         username=request_body["username"],
         name = request_body["name"],
         firstname = request_body["firstname"],
         role = request_body["role"]
     )
+    db.session.add(user)
+    db.session.commit()
+
     additional_claims = {
         "user_id" : user.id,
         "user_username" : user.username,
@@ -111,7 +147,7 @@ def register():
     }
 
     access_token = create_access_token(identity=request_body["email"], additional_claims=additional_claims)
-    return jsonify(access_token=access_token, role=user.role.value), 200
+    return jsonify(access_token=access_token, role=user.role.value, user=user.id), 200
 
 @api.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
@@ -130,25 +166,28 @@ def delete_user(user_id):
 def add_photo():
     request_body = request.get_json()
 
-    if Photo.query.filter_by(id=request_body["id"]).first():
+    print(request_body)
+    if Photo.query.filter_by(url=request_body["url"]).first():
         return jsonify({"msg": "Duplicated image"}), 409
-    jtw_data = get_jwt()
-    user_id = jtw_data["user_id"]
+    jwt_data = get_jwt()
+
     photo = Photo()
     photo.new_photo(   
         url=request_body["url"],
         bicycle=request_body["bicycle"],
         helmet = request_body["helmet"],
         price = request_body["price"],
-        user_id = user_id
+        user_id = request_body["user_id"]
     )
 
     db.session.add(photo)
     db.session.commit()
 
-    return jsonify({"msg": "Photo created", "photo": photo.serialize()}),201
+    # photo = photo.serialize()
 
-@api.route('/photos', methods = ['GET'])
+    return jsonify({"msg": "Photo created"}),201
+
+@api.route('/photos/<int:user_id>', methods = ['GET'])
 @jwt_required()
 def get_photos(): 
     photos = Photo.query.all()
@@ -175,6 +214,49 @@ def get_photo(photo_id):
     }
 
     return jsonify(response_body, photo_info), 200
+
+
+
+
+@api.route('/photos/rider', methods = ['POST'])
+@jwt_required()
+def get_rider_photo(): 
+    bicycle = request.json['bicycle']
+    helmet = request.json['helmet']
+    print(f'Bicycle: {bicycle}, Helmet: {helmet}')
+
+    query = Photo.query
+
+    if bicycle:
+        query = query.filter_by(bicycle = Bikes[bicycle])
+    if helmet:
+        query = query.filter_by(helmet = Helmets[helmet])
+
+    photos = query.all()
+    print("llega", photos, query)
+
+    if not photos:
+        return jsonify({"msg": "No photos found"}), 404
+
+    photo_list = [photo.serialize() for photo in photos]
+    response_body = {
+        "message": "Photos found!",
+        "data": photo_list
+    }
+
+    return jsonify(response_body), 200
+
+    # photo = Photo.query.get(helmet, bicycle)
+    # if photo is None:
+    #     return jsonify({"msg": "Photo not found"}), 404
+        
+    # photo_info = Photo.query.filter_by(helmet="helmet", bicycle="bicycle").first().serialize()
+    # response_body = {
+    #     "message" : "Nice photo!",
+    #     "data": photo_info
+    # }
+
+    # return jsonify(response_body, photo_info), 200
 
 @api.route('/photos/<int:photo_id>', methods=['DELETE'])
 @jwt_required()

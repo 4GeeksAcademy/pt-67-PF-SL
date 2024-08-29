@@ -17,14 +17,14 @@ class PaymentMethods(enum.Enum):
     cash = "Cash"
 
 class Bikes(enum.Enum):
-    santa_Cruz = "Santa Cruz"
-    kona = "Kona"
+    santa_Cruz = "Santa Cruz Nomad 4"
+    kona = "Kona Process 153"
     canyon = "Canyon"
     custom = "Custom"
 
 class Helmets(enum.Enum):
-    scott = "Scott"
-    troyLee = "TroyLee"
+    scott = "Scott Spartan"
+    troyLee = "Troy Lee Stage"
     bluegrass = "Bluegrass"
     custom = "Custom"
 
@@ -109,8 +109,8 @@ class Photo(db.Model):
         return {
             'id': self.id,
             'url': self.url,
-            'bicycle': self.bicycle,
-            'helmet': self.helmet,
+            'bicycle': self.bicycle.value,
+            'helmet': self.helmet.value,
             'price': self.price,
             'user_id': self.user_id,
         }

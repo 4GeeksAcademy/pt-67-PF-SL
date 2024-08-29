@@ -1,14 +1,31 @@
+import { bicycle } from "@cloudinary/url-gen/qualifiers/focusOn";
 import { image } from "@cloudinary/url-gen/qualifiers/source";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			users: [],
+			user_id: null,
+			userInfo: "",
 			message: null,
-			token:"",
+			token: "",
 			registerInputLength: 1,
-			photo: [],
+			photo: [
+				{
+					helmet: "",
+					bicycle: "",
+					price: "",
+					url: ""
+				}
+				],
+			riderPhoto: [
+				{
+					url: "",
+				}
+			],
 			url: [],
+			helmet: [],
+			bicycle: [],
 			demo: [
 				{
 					title: "FIRST",
@@ -24,36 +41,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
-			login: async(email, password) => {
+			login: async (email, password) => {
 				const store = getStore()
-                try {
-                    let response = await fetch(process.env.BACKEND_URL + "api/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            "email": email,
-                            "password": password
-                        })
-                    })
+				try {
+					let response = await fetch(process.env.BACKEND_URL + "api/login", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"email": email,
+							"password": password
+						})
+					})
 
-                    const data = await response.json()
-                    localStorage.setItem("token", data.access_token);
-					setStore({token: data.access_token})
+					const data = await response.json()
+					localStorage.setItem("token", data.access_token);
+					localStorage.setItem("user_id", data.additional_claims?.user_id);
+					
 
-                    return data
+					setStore({ token: data.access_token, user_id: data.additional_claims?.user_id })
+					console.log("data login", data)
 
-                }   catch (error) {
-                    return false 
-                }
+					return data
+
+				} catch (error) {
+					return false
+				}
 			},
-			logout: () => {
-				localStorage.removeItem('token');
-				setStore({token: ""})
+			// deleteUser: async(token)=> {
+			// 	try {
+			// 		let response = await fetch(`${process.env.BACKEND_URL}api/users/user/${localStorage.getItem("user_id")}`, {
+			// 			method: "GET",
+			// 			headers: {
+			// 				'Authorization': 'Bearer ' + token 
+			// 			}
+			// 		})	
+			// 		const data = await response.json()
+			// 		setStore({user: data.data})
+			// 		return
+			// 	} catch (error) {
+					
+			// 	}
+			// },
+			logout: async () => {
+
+				// localStorage.removeItem('token');
+				// localStorage.removeItem("user_id", data.additional_claims?.user_id);
+				setStore({ token: "" })
 			},
 
-			register: async(email, password, username, name, firstname, role) => {
+			register: async (email, password, username, name, firstname, role) => {
 				try {
 					let response = await fetch(process.env.BACKEND_URL + "api/register", {
 						method: "POST",
@@ -72,49 +110,240 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const data = await response.json()
 					localStorage.setItem("token", data.access_token);
-					setStore({token: data.access_token})
+					setStore({ token: data.access_token })
 
 					return data
 
-				}   catch (error) {
-					return false 
+				} catch (error) {
+					return false
 				}
 			},
-			uploadPhoto: async(url, bicycle, helmet, price, user_id) => {
+
+			getUserInfo: async () => {
+				const store = getStore()
+				const token = localStorage.getItem("token")
+				try {
+					const response = await fetch(
+						process.env.BACKEND_URL + "api/userinfo",
+						{
+							method: "GET",
+							headers: {
+								Authorization: `Bearer ${token}`, // Reemplazar 'token' con el token JWT del usuario
+							},
+						}
+					);
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ userInfo: data, user_id: data.id })
+						//setStore({ isUserLogged: true })
+						return String(data.id);
+						// setIsUserLogged(true);
+					} else {
+						throw new Error("Failed to fetch user info");
+					}
+				} catch (error) {
+					console.error("[flux.getUserInfo] Error fetching user info:", error);
+				}
+			},
+
+			uploadPhoto: async (url, price, user_id, bicycle, helmet) => {
+				const token = localStorage.getItem("token")
 				try {
 					let response = await fetch(process.env.BACKEND_URL + "api/photos", {
 						method: "POST",
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
 						},
 						body: JSON.stringify({
 							"url": url,
+							"price": price,
+							"user_id": user_id,
 							"bicycle": bicycle,
 							"helmet": helmet,
-							"price": price,
-							/* "user_id": user_id, Aqui tengo que ver como coger el user id del que esta ya logueado */
 						})
-					})
-
-					const data = await response.json()
-					localStorage.setItem("photo", data.photo);
-					setStore({photo: data.photo})
-
-					return data
-
-				}   catch (error) {
-					return false 
+					});
+			
+					const data = await response.json();
+					if (data && data.photo) {
+						localStorage.setItem("photo", JSON.stringify(data.photo));
+						setStore({ photo: data.photo });
+						console.log("datos bici", data.photo)
+					}
+			
+					return data;
+				} catch (error) {
+					console.error("Error uploading photo:", error);
+					return false;
 				}
 			},
+			
+			azurePredict: async (url) => {
+				const myHeaders = new Headers();
+				myHeaders.append("Prediction-Key", process.env.PREDICTION_KEY);
+				myHeaders.append("Content-Type", "application/json");
+			
+				const raw = JSON.stringify({ "Url": url });
+			
+				const requestOptions = {
+					method: "POST",
+					headers: myHeaders,
+					body: raw,
+					redirect: "follow"
+				};
+			
+				try {
+					const response = await fetch("https://westeurope.api.cognitive.microsoft.com/customvision/v3.0/Prediction/4a0d1a7e-a87e-43e2-838c-3eec869f5aeb/classify/iterations/Iteration4/url", requestOptions);
+			
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+			
+					const data = await response.json();
+					console.log("Azure response:", data);
+			
+					if (!data || !data.predictions) {
+						throw new Error("Respuesta de Azure malformada. Falta 'predictions'.");
+					}
+			
+					// Start values for each tag group
+					let bestTags = {
+						'bicycle': { tagName: "", probability: 0 },
+						'helmet': { tagName: "", probability: 0 }
+					};
+
+					// Threshold for probability
+					const probabilityThreshold = 0.90;
+
+					// Read predictions
+					data.predictions.forEach(prediction => {
+						if (prediction.probability > probabilityThreshold) {
+							// Check and update best tag for bicycle category
+							if (prediction.tagName.toLowerCase().includes('santa cruz') || prediction.tagName.toLowerCase().includes('kona')) {
+								if (prediction.probability > bestTags['bicycle'].probability) {
+									bestTags['bicycle'] = prediction;
+								}
+							}
+
+							// Check and update best tag for helmet category
+							if (prediction.tagName.toLowerCase().includes('scott') || prediction.tagName.toLowerCase().includes('troy lee')) {
+								if (prediction.probability > bestTags['helmet'].probability) {
+									bestTags['helmet'] = prediction;
+								}
+							}
+						}
+					});
+
+					// Storing results
+					const store = {
+						bicycle: bestTags['bicycle'].tagName ? bestTags['bicycle'].tagName : 'No valid bicycle prediction',
+						helmet: bestTags['helmet'].tagName ? bestTags['helmet'].tagName : 'No valid helmet prediction'
+					};
+					if (store.bicycle === 'Santa Cruz Nomad 4') {
+						// Si el valor es 'Santa Cruz Nomad 4', se establece como 'santa_Cruz'
+						setStore({ bicycle: 'santa_Cruz' });
+					} else if (store.bicycle === 'Kona Process 153') {
+						// Si el valor es 'Kona Process 153', se establece como 'kona'
+						setStore({ bicycle: 'kona' });
+					} else if (store.bicycle === 'No valid bicycle prediction') {
+						// Si el valor es 'No valid bicycle prediction', se establece como 'custom'
+						setStore({ bicycle: 'custom' });
+					};
+
+					if (store.helmet === 'Scott Spartan') {
+						setStore({ helmet: 'scott' });
+					} else if (store.helmet === 'Troy Lee Stage') {
+						setStore({ helmet: 'troyLee' });
+					} else if (store.helmet === 'No valid bicycle prediction') {
+						setStore({ helmet: 'custom' });
+					};
+
+					// Log results
+					console.log('Store:', store);
+					console.log("helmet", getStore().helmet)
+					console.log("bicycle",getStore().bicycle)
+
+					const azureData = {
+						bicycle : getStore().bicycle,
+						helmet : getStore().helmet
+					};
+					// Return values find
+					return azureData;
+			
+				} catch (error) {
+					console.error("Error en azurePrediction:", error);
+					return null; // Return null if error
+				}
+			},
+
+			getRiderPhotos: async (bicycle, helmet) => {
+				// const data = await response.json()
+				// const user_id = localStorage.getItem(data.additional_claims?.user_id)
+				const token = localStorage.getItem("token")
+				// const formData = new FormData()
+				// 	formData.append('user_id', user_id)
+				// 	console.log("user", user_id)
+				
+					let response = await fetch(process.env.BACKEND_URL + "api/photos/rider",{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify({
+							"bicycle": bicycle,
+							"helmet": helmet,
+						}),
+				})
+
+				const data = await response.json();
+
+				// const data = await response.json();
+
+                // if (response.ok) {
+                //     setStore({ riderPhoto: data.data || [] }); // Asegúrate de que 'data.data' es un array
+                //     return data.data;
+                // } else {
+                //     console.log(data.msg);
+                //     setStore({ riderPhoto: [] });
+                //     localStorage.setItem("riderPhoto", JSON.stringify(data.data));
+
+                //     console.log("getRider url", data.data)
+                //     console.log("riderPhoto url", store.data)
+
+
+				if (response.ok) {
+					setStore({ riderPhoto: data.data || [] }); // Asegúrate de que 'data.data' es un array
+					localStorage.setItem("riderPhoto", JSON.stringify(data.data));
+
+					const fotoData = {
+						bicycle : getStore().riderPhoto,
+					};
+					console.log(fotoData)
+
+					return data.data;
+				} else {
+					console.log(data.msg);
+					setStore({ riderPhoto: [] });
+					return null;
+				}
+			},
+
+			clearRiderPhotos: () => {
+				setStore({
+					riderPhoto: [],
+				});
+			},
+
 			getMessage: async () => {
-				try{
+				try {
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
 					return data;
-				}catch(error){
+				} catch (error) {
 					console.log("Error loading message from backend", error)
 				}
 			},

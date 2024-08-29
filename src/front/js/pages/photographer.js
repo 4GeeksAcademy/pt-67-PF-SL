@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
 import "../../styles/photographer.css";
@@ -10,12 +10,14 @@ export const Photographer = () => {
     const [bicycle, setBicycle] = useState('');
     const [helmet, setHelmet] = useState('');
     const [price,setPrice] = useState('');
-    const [user_id,setUser_id] = useState(''); /*Aqui tengo que ver como coger el user id del que esta ya logueado */
     const [loading, setLoading] = useState ('');
+    const user_id = store.user_id;
+    const [previousUrl, setPreviousUrl] = useState("");
+
+        console.log(user_id)
+        console.log(store.userInfo)
 
     const navigate = useNavigate();
-
-    const registerInputLength = store.registerInputLength
 
     /*https://www.youtube.com/watch?v=b5-TEugeyuI el link del video de como implementar cloudinary */
 
@@ -26,7 +28,7 @@ export const Photographer = () => {
 
         const cdata = new FormData();
             cdata.append("file", file);
-            cdata.append("upload_preset", "BeBananaWeb")
+            cdata.append("upload_preset", process.env.PRESET_NAME)
 
             setLoading (true)
             console.log("helo", cdata)
@@ -53,24 +55,56 @@ export const Photographer = () => {
             return false 
         }
     }
-    const handleUploadPhoto = async (e) => {
-        e.preventDefault()
-        const uploadPhoto = await actions.uploadPhoto(url, bicycle, helmet, price) /*, user_id hay que añadirlo del que ya existe*/
+    
+    const handleUploadNext = () => {
+        setPreviousUrl(url);
+    
 
-        if (uploadPhoto){
-
-        }
-    }
-
-    const deleteImage = () => {
         setUrl("");
-    }
+        setPrice("");
+    
+        document.getElementById("url").value = "";
+    };
 
-	return (
-		<div className="photographer-container">
+    const handleUploadPhoto = async (e) => {
+        e.preventDefault();
+    
+        // Obtener los valores de bicicleta y casco desde Azure
+        const azureResult = await actions.azurePredict(url);
+    
+        if (!azureResult) {
+            console.log("Azure prediction failed");
+            return;
+        }
+    
+        const { helmet, bicycle } = azureResult;
+        console.log("Data from Azure:", { helmet, bicycle });
+    
+
+        const result = await actions.uploadPhoto(url, price, user_id, bicycle, helmet);
+    
+        if (result) {
+            console.log("Photo uploaded successfully");
+        } else {
+            console.log("Upload failed");
+        }
+
+        handleUploadNext();
+    };
+    // useEffect (() => {
+    //     actions.getUserInfo()
+    // }, [user_id])
+    return (
+        <div className="photographer-container">
+            {previousUrl && (
+            <div>
+                <h3>Previous Photo:</h3>
+                <img className="previous-image" src={previousUrl} alt="previous uploaded"/>
+            </div>
+            )}
             <form onSubmit={handleUploadPhoto}>
-				<div className='tag-container'>
-					<label htmlFor="url">Select your amazing photo:</label>
+                <div className='tag-container'>
+                    <label htmlFor="url">Select your amazing photo:</label>
                     <div>
                         <input
                             className='file_select'
@@ -83,44 +117,28 @@ export const Photographer = () => {
                         {loading ? (
                                 <h3 className='loading'>Loading...</h3>) : (
                                 <div>
-                                    <img src={url}/>
-                                    {url ? (<button onClick={() => deleteImage()}>Delete photo</button>) : (<h4></h4>) }
+                                    <img className="photographer-image" src={url} alt="uploaded"/>
+                                    {url ? (<button type="button" onClick={() => deleteImage()}>Delete photo</button>) : null}
                                 </div>
                         )}   
                     </div>
-				</div>
-				<div className='tag-container'>
-                    <label htmlFor="bicycle">Bicycle:</label>
-                    <select id="bicycle" type="bicycle" value={bicycle} onChange={(e) => setBicycle(e.target.value)}>
-                        <option value="">Witch Bike is sending it?</option>
-                        <option value="santa_Cruz">Santa Cruz</option>
-                        <option value="Kona">Kona</option>
-                    </select>
                 </div>
-				<div className='tag-container'>
-                    <label htmlFor="helmet">Helmet:</label>
-                    <select id="bicycle" type="bicycle" value={helmet} onChange={(e) => setHelmet(e.target.value)}>
-						<option value="">Witch Helmet protects our Bananer?</option>
-                        <option value="scott">Scott</option>
-                        <option value="troyLee">TroyLee</option>
-                    </select>
-                </div>
-				<div className='tag-container'>
+                
+                <div className='tag-container'>
                     <label htmlFor="price">Price:</label>
                     <input
                         className='price'
                         type="number"
                         id="price"
                         value={price}
-						minLength={registerInputLength}
                         onChange={(e) => setPrice(e.target.value)}
                     />
                 </div>
                 <button type="submit">Send it!</button>
             </form>
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+          
+            <button className="btn btn-primary" onClick={handleUploadNext}>Upload next</button>
+          
+        </div>
+    );
 };

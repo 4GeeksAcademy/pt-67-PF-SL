@@ -29,7 +29,7 @@ export const Navbar = () => {
 					<h1 className="be-banana">BEBANANA</h1>
 				</div>
 				<div className="navbar-container-right">
-					<div className="navbar-link ml-auto">
+					<div className="navbar-link mr-auto">
 						<Link to="/demo">
 							<button className="btn btn-secondary">Demo</button>
 						</Link>

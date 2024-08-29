@@ -1,41 +1,107 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Context } from '../store/appContext';
 import "../../styles/rider.css";
 
 export const Rider = () => {
-	const { store, actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
+    const [bicycle, setBicycle] = useState('');
+    const [helmet, setHelmet] = useState('');
+    const [showButtons, setShowButtons] = useState(false);
 
-	return (
-		<div className="rider-container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+    const handleGetRiderPhotos = async (e) => {
+        e.preventDefault();
+        const getPhotos = await actions.getRiderPhotos(bicycle, helmet);
+
+        if (getPhotos) {
+            setShowButtons(true); 
+            console.log("Photos retrieved:", getPhotos);
+
+        } else {
+            setShowButtons(false); 
+            console.log("No photos found");
+        }
+    };
+
+    const handleAddToCart = (photo) => {
+        // Implement your cart logic here
+        console.log("Added to cart:", photo);
+    };
+
+    const handleNextRider = () => {
+        setBicycle('');
+        setHelmet('');
+        setShowButtons(false);
+
+        actions.clearRiderPhotos();
+        
+    };
+
+    return (
+        <div className="rider-container">
+            <form onSubmit={handleGetRiderPhotos}>
+                <div className='tag-container'>
+                    <label htmlFor="bicycle">Bicycle:</label>
+                    <select id="bicycle" value={bicycle} onChange={(e) => setBicycle(e.target.value)}>
+                        <option value="">Which Bike is sending it?</option>
+                        <option value="santa_Cruz">Santa Cruz</option>
+                        <option value="kona">Kona</option>
+                    </select>
+                </div>
+                <div className='tag-container'>
+                    <label htmlFor="helmet">Helmet:</label>
+                    <select id="helmet" value={helmet} onChange={(e) => setHelmet(e.target.value)}>
+                        <option value="">Which Helmet protects our Bananer?</option>
+                        <option value="scott">Scott</option>
+                        <option value="troyLee">TroyLee</option>
+                    </select>
+                </div>
+                <button type="submit">Find me!</button>
+            </form>
+
+            <div className="photos-container row">
+                {store.riderPhoto.map((item, index) => (
+                    <div className="card col-2 mx-5" key={index}>
+                        <div className="rider-card">
+                            <div className="rider-photo d-flex">
+                                <img src={item.url} alt="photo" className="rider-photo img-fluid w-100" />
+                            </div>
+                            {showButtons && (
+                                <div className="carousel-button">
+                                    <button className="btn btn-success mt-2" onClick={() => handleAddToCart(item)}>
+                                        Buy {item.price}€
+                                    </button>
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+                ))}
+                <div className="">
+                    <button className="rider-button" onClick={handleNextRider}>Find another rider!</button>
+                </div>
+            </div>
+            
+    </div>
+    );
 };
+
+
+            {/* <div id="photoCarousel" className="carousel-slide d-flex row">
+                <div className="carousel-inner d-flex col-3">
+                    {store.riderPhoto.map((item, index) => (
+                        <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                            <div className="rider-photo-container d-flex">
+                                <img src={item.url} alt="photo" className="rider-photo img-fluid w-100" />
+                            </div>
+                            <div className="carousel-caption d-none ">
+                                <button className="btn btn-success mt-2" onClick={() => handleAddToCart(item)}>Add to cart</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div> */}
+
+
+ 
+
