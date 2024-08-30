@@ -97,8 +97,8 @@ export const Photographer = () => {
     return (
         <div className="photographer-container">
             {previousUrl && (
-            <div>
-                <h3>Previous Photo:</h3>
+            <div className='uploaded-image' >
+                <h3>Photo uploaded:</h3>
                 <img className="previous-image" src={previousUrl} alt="previous uploaded"/>
             </div>
             )}

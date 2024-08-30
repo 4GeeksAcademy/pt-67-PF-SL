@@ -61,7 +61,7 @@ export const Rider = () => {
 
             <div className="photos-container row">
                 {store.riderPhoto.map((item, index) => (
-                    <div className="card col-2 mx-5" key={index}>
+                    <div className="card d-flex col-2 mx-5" key={index}>
                         <div className="rider-card">
                             <div className="rider-photo d-flex">
                                 <img src={item.url} alt="photo" className="rider-photo img-fluid w-100" />
@@ -77,9 +77,9 @@ export const Rider = () => {
                         </div>
                     </div>
                 ))}
-                <div className="">
-                    <button className="rider-button" onClick={handleNextRider}>Find another rider!</button>
-                </div>
+            </div>
+            <div className="">
+                <button className="rider-button" onClick={handleNextRider}>Find another rider!</button>
             </div>
             
     </div>

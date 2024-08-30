@@ -71,8 +71,8 @@
 }
 
 .photographer-container button {
-    font-family:   Franklin Gothic Medium;
-    width: 100%;
+    font-family: Franklin Gothic Medium;
+    width: 80%;
     padding: 10px;
     background-color: #1313137f;
     color: #fafaf9;
@@ -90,6 +90,26 @@
 .photographer-container button:hover {
     background-color: rgb(248, 245, 33);
     color:black
+}
+
+.uploaded-image{
+    font-family:   Franklin Gothic Medium;
+    text-shadow: 1px 1px 2px black;
+    color: #fafaf9;
+    font-weight: 100;
+    font-size: 1.7rem;
+    /* max-height: 100px;
+    max-width: 100px; */
+
+}
+.previous-image{
+    width: 20vh;
+    padding: 0 5%;
+    height: 30vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10%;
 }
 
 @keyframes inputFocus {

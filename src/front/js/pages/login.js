@@ -15,7 +15,7 @@ const login = () => {
 
 
             if (logged){
-                navigate(logged.role === 'Rider' ? '/rider' : '/photographer');
+                navigate(logged.additional_claims?.role === 'Rider' ? '/rider' : '/photographer');
                 console.log("logged", logged)
             }
     }
