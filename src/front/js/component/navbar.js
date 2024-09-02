@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import beBananaLogo from "/workspaces/pt-67-PF-SL/src/front/img/BeBanana.png";
 import "../../styles/navbar.css";
 import { Context } from "../store/appContext";
 
@@ -21,23 +20,23 @@ export const Navbar = () => {
     }
 
 	return (
-		<nav className="navbar p-3 m-3" style={{ backgroundColor: 'rgba(46, 39, 1, 0.8)' }}>
+		<nav className="navbar p-3 m-3" style={{ backgroundColor: 'rgb(255, 255, 255);' }}>
 			<div className="navbar-container">
 				<div className="navbar-container-left">
 					<Link to="/">
-						<img src={beBananaLogo} alt="Be Banana Logo" style={{ height: "75px" }} className="navbar-logo mb-0 h1" />
+						<img src={"https://res.cloudinary.com/dflvexboa/image/upload/v1724271495/ajvismnteuh2wjl7ub9c.png"} alt="Be Banana Logo" style={{ height: "75px" }} className="navbar-logo mb-0 h1" />
 					</Link>
 					<h1 className="be-banana">BEBANANA</h1>
 				</div>
 				<div className="navbar-container-right">
-					<div className="navbar-link ml-auto">
+					{/* <div className="navbar-link mr-auto">
 						<Link to="/demo">
 							<button className="btn btn-secondary">Demo</button>
 						</Link>
-					</div>
+					</div> */}
 					{(location.pathname !== "/login" && location.pathname !== "/register") && (store.token ? 
-						<button className="navbar-boton btn btn-lg" onClick={handleLogout}>Logout</button> : 
-						<button className="navbar-boton" onClick={handleLogin}>Login</button>
+						<button className="navbar-button btn btn-lg" onClick={handleLogout}>LOGOUT</button> : 
+						<button className="navbar-button" onClick={handleLogin}>LOGIN</button>
 					)}
 					
 				</div>

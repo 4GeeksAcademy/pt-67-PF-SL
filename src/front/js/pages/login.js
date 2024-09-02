@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
-import "/workspaces/pt-67-PF-SL/src/front/styles/login.css";
+import "../../styles/login.css";
 
 const login = () => {
     const {actions} = useContext(Context)
@@ -11,9 +11,13 @@ const login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        const user = await actions.login(email, password)
-            console.log(user)
-            navigate(user.role === 'Rider' ? '/rider' : '/photographer');
+        const logged = await actions.login(email, password)
+
+
+            if (logged){
+                navigate(logged.additional_claims?.role === 'Rider' ? '/rider' : '/photographer');
+                console.log("logged", logged)
+            }
     }
     /* if user role photographer demo if role rider navigate demo*/
     return (

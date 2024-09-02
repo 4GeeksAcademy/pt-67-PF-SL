@@ -1,7 +1,7 @@
 
 
 .register-container {
-    background-image: url('/workspaces/pt-67-PF-SL/src/front/img/HollybikeSonia.PNG');
+    background-image: url('https://res.cloudinary.com/dflvexboa/image/upload/v1724270917/d6fxre9fvee1pdqayu6j.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -73,6 +73,7 @@
 }
 .register-container button:hover {
     background-color: rgb(248, 245, 33);
+    color:black
 }
 
 .register-container span {

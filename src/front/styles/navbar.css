@@ -2,17 +2,18 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-family:Franklin Gothic Medium;
+    font-family: Franklin Gothic Medium;
     text-shadow: 1px 1px 2px black;
     width: 100%;
-    padding: 10px;
-    color: #fafaf9;
+    height: 90px;
+    color: #080808;
+    align-items: center;
 }
 .navbar-container-left{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: end;
+
+
     padding: 10px;
 }
 .navbar-container-right{
@@ -24,26 +25,30 @@
 .navbar-link{
     margin-right: 1em;
     background-color: aliceblue;
-    font-family:   Verdana;
-    width: 100%;
-    font-size: 1rem;
+    font-family:   Franklin Gothic Medium;
+    font-size: x-large;
+    width: 200px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
 }
-.navbar-boton{
+.navbar-button{
     background-color: rgb(248, 245, 33);
-    font-family:   Verdana;
-    width: 100%;
+    font-family:Franklin Gothic Medium;
+    font-size: x-large;
+    width: 200px;
     padding: 10px;
     color:  #1313137f;
-    font-size: 1rem;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     margin-right: 1em;
 }
 
-.navbar-boton button:hover {
-    background-color: rgb(248, 245, 33);
+.navbar-button button:hover {
+    background-color: rgb(33, 194, 248);
+}
+
+.be-banana {
+    font-size: xx-large;
 }
